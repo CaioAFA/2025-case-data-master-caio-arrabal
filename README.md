@@ -12,6 +12,7 @@ Python3
     - Leitura / escrita de bases de dados
     - Data preparation
 - Scikit-Learn: fácil prototipagem, bom para testar hipóteses e diferentes algoritmos para solução do problema
+- Conda: gerenciamento de pacotes
 
 Considerações:
 - Utilizar uma implementação que possa ser utilizada em hardwares com menos memória
