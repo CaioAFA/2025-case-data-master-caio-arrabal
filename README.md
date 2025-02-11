@@ -4,6 +4,21 @@ Link do Kaggle: https://www.kaggle.com/datasets/gcenachi/case-data-master-2024
 
 <br>
 
+## Tecnologias utilizadas
+
+Desafio com solução de Aprendizado Supervisionado:
+Python3
+- Pandas: utilizado para:
+    - Leitura / escrita de bases de dados
+    - Data preparation
+- Scikit-Learn: fácil prototipagem, bom para testar hipóteses e diferentes algoritmos para solução do problema
+
+Considerações:
+- Utilizar uma implementação que possa ser utilizada em hardwares com menos memória
+
+
+<br>
+
 ## Dicionário de Dados
 ### **transactions.parquet**
 Transações de usuários (até 31/03/2017)
