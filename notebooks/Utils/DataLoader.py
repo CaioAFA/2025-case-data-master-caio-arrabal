@@ -57,6 +57,25 @@ class DataLoader(object):
         ])
 
         return members_df
+    
+
+    def load_user_logs_df(self) -> pd.DataFrame:
+        user_logs_df = pd.read_parquet('../data/user_logs.parquet')
+
+        user_logs_df = self.__convert_to_integer(user_logs_df, [
+            'num_25',
+            'num_50',
+            'num_75',
+            'num_985',
+            'num_100',
+            'num_unq',
+
+            # Transforming to int: this is a float number,
+            # but its decimal points are not useful
+            'total_secs'
+        ])
+
+        return user_logs_df
 
 
     def __convert_to_datetime(self, df: pd.DataFrame, fields: List[str]) -> pd.DataFrame:
