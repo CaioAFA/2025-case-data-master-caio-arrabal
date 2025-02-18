@@ -75,6 +75,23 @@ class DataLoader(object):
             'total_secs'
         ])
 
+        # Removing invalid total_secs
+        user_logs_df = user_logs_df[user_logs_df['total_secs'] > 0]
+        user_logs_df = user_logs_df[user_logs_df['total_secs'] < 2628000] # Less than one month
+
+        user_logs_df['total_hours'] = user_logs_df['total_secs'] / 3600
+
+        # Removing outliers
+        user_logs_df['total_hours'] = user_logs_df[user_logs_df['total_hours'] < 182]
+        user_logs_df['num_25'] = user_logs_df[user_logs_df['num_25'] < 7458]
+        user_logs_df['num_50'] = user_logs_df[user_logs_df['num_50'] < 395]
+        user_logs_df['num_75'] = user_logs_df[user_logs_df['num_75'] < 215]
+        user_logs_df['num_985'] = user_logs_df[user_logs_df['num_985'] < 2513]
+        user_logs_df['num_100'] = user_logs_df[user_logs_df['num_100'] < 8414]
+        user_logs_df['num_unq'] = user_logs_df[user_logs_df['num_unq'] < 4362]
+
+        user_logs_df.drop('total_secs', inplace=True)
+
         return user_logs_df
 
 
