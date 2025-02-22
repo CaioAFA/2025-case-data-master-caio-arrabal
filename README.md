@@ -63,3 +63,11 @@ Informações de usuários. Nem todos os usuários estão disponíveis no conjun
 | num_100                | Nº de músicas tocadas por mais de 98.5% da duração                  |
 | num_unq                | Nº de músicas únicas tocadas                                        |
 | total_secs             | Total de segundos tocados                                           |
+
+
+
+### TODO
+- Criar variáveis para custo de mês-1, mês-2
+    - Utilizar groupby com Shift
+    - Limpeza dos dados com essas colunas vazias
+- Criar método para buscar dados de transactions e de members

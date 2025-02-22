@@ -1,24 +1,38 @@
 import pandas as pd
-from typing import List
+from typing import List, Union, Iterator
 from Utils.DataTransformer import DataTransformer
+import pyarrow.parquet as pq
 
 
 class DataLoader(object):
     def __init__(self):
         self.__data_transformer = DataTransformer()
+        self.__transactions_df_file_name = '../data/transactions.parquet'
 
 
     def load_transactions_df(self) -> pd.DataFrame:
-        transactions_df = pd.read_parquet('../data/transactions.parquet')
+        transactions_df = pd.read_parquet(self.__transactions_df_file_name)
+        transactions_df = self.__process_load_transactions_df(transactions_df)
+        return transactions_df
 
+
+    def load_transactions_df_in_chunks(self, chunksize: int = None) -> Union[pd.DataFrame, Iterator[pd.DataFrame]]:
+        parquet_file = pq.ParquetFile(self.__transactions_df_file_name)
+        for batch in parquet_file.iter_batches(batch_size=chunksize):
+            chunk = batch.to_pandas()
+            chunk = self.__process_load_transactions_df(chunk)
+            yield chunk
+
+
+    def __process_load_transactions_df(self, df: pd.DataFrame) -> pd.DataFrame:
         dt_fields = [
             'transaction_date',
             'membership_expire_date'
         ]
-        transactions_df = self.__data_transformer.convert_to_datetime(transactions_df, dt_fields)
-        transactions_df = self.__data_transformer.split_datetime_field_in_year_month_and_day(transactions_df, dt_fields)
+        df = self.__data_transformer.convert_to_datetime(df, dt_fields)
+        df = self.__data_transformer.split_datetime_field_in_year_month_and_day(df, dt_fields)
 
-        transactions_df = self.__data_transformer.convert_to_integer(transactions_df, [
+        df = self.__data_transformer.convert_to_integer(df, [
             'payment_method_id',
             'payment_plan_days',
             'plan_list_price',
@@ -29,34 +43,31 @@ class DataLoader(object):
             'is_cancel'
         ])
 
-        transactions_df = self.__data_transformer.convert_to_boolean(transactions_df, [
+        df = self.__data_transformer.convert_to_boolean(df, [
             'is_auto_renew',
             'is_cancel'
         ])
 
-        transactions_df['discount'] = transactions_df['plan_list_price'] - transactions_df['actual_amount_paid']
+        df['discount'] = df['plan_list_price'] - df['actual_amount_paid']
 
         # Remove negative values
-        transactions_df['discount'] = transactions_df['discount'].apply(lambda x: x if x >= 0 else 0)
+        df['discount'] = df['discount'].apply(lambda x: x if x >= 0 else 0)
 
-        transactions_df['price_per_month'] = transactions_df['actual_amount_paid'] / (transactions_df['payment_plan_days'] / 30)
+        df['price_per_month'] = df['actual_amount_paid'] / (df['payment_plan_days'] / 30)
 
         # Unused field
-        transactions_df.drop('safra', axis=1, inplace=True)
+        # df.drop('safra', axis=1, inplace=True)
 
         # Outliers
-        transactions_df = transactions_df[transactions_df.membership_expire_date.dt.year >= 2015]
+        df = df[df['membership_expire_date_year'] >= 2015]
 
-        return transactions_df
+        return df
     
 
-    def load_members_df(self, nrows: int = None) -> pd.DataFrame:
+    def load_members_df(self) -> pd.DataFrame:
         members_df = pd.read_parquet(
             '../data/members.parquet'
         )
-
-        if nrows is not None:
-            members_df = members_df[:nrows]
 
         dt_fields = ['registration_init_time']
         members_df = self.__data_transformer.convert_to_datetime(members_df, dt_fields)
@@ -112,7 +123,6 @@ class DataLoader(object):
         user_logs_df = user_logs_df[user_logs_df['num_100'] < 8414]
         user_logs_df = user_logs_df[user_logs_df['num_unq'] < 4362]
 
-        user_logs_df.drop('total_secs', inplace=True, axis=1)
+        # user_logs_df.drop('total_secs', inplace=True, axis=1)
 
         return user_logs_df
-

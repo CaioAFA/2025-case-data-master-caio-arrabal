@@ -54,3 +54,21 @@ class DataTransformer(object):
                 df.drop(f, inplace=True, axis=1)
 
         return df
+    
+
+    def create_cost_column(self, user_logs_df: pd.DataFrame) -> pd.DataFrame:
+        def calc_cost(row: pd.Series) -> float:
+            return 50 + \
+                  (0.0051 * row['num_unq']) + \
+                  (0.0001 * row['total_secs'])
+
+        user_logs_df['cost'] = user_logs_df.apply(calc_cost, axis=1)
+        return user_logs_df
+    
+
+    def create_net_profit_column(self, user_logs_df: pd.DataFrame) -> pd.DataFrame:
+        def calc(row: pd.Series) -> float:
+            return row['actual_amount_paid'] - row['cost']
+
+        user_logs_df['net_profit'] = user_logs_df.apply(calc, axis=1)
+        return user_logs_df
