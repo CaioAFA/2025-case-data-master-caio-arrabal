@@ -72,3 +72,102 @@ class DataTransformer(object):
 
         user_logs_df['net_profit'] = user_logs_df.apply(calc, axis=1)
         return user_logs_df
+    
+
+    def process_transactions_df(self, df: pd.DataFrame) -> pd.DataFrame:
+        dt_fields = [
+            'transaction_date',
+            'membership_expire_date'
+        ]
+        df = self.convert_to_datetime(df, dt_fields)
+        df = self.split_datetime_field_in_year_month_and_day(df, dt_fields)
+
+        df = self.convert_to_integer(df, [
+            'payment_method_id',
+            'payment_plan_days',
+            'plan_list_price',
+            'actual_amount_paid',
+
+            # Transform into int, to transform into bool
+            'is_auto_renew',
+            'is_cancel'
+        ])
+
+        df = self.convert_to_boolean(df, [
+            'is_auto_renew',
+            'is_cancel'
+        ])
+
+        df['discount'] = df['plan_list_price'] - df['actual_amount_paid']
+
+        # Remove negative values
+        df['discount'] = df['discount'].apply(lambda x: x if x >= 0 else 0)
+
+        df['price_per_month'] = df['actual_amount_paid'] / (df['payment_plan_days'] / 30)
+
+        # Outliers
+        df = df[df['membership_expire_date_year'] >= 2015]
+
+        return df
+    
+
+    def process_members_df(self, df: pd.DataFrame) -> pd.DataFrame:
+        dt_fields = ['registration_init_time']
+        df = self.convert_to_datetime(df, dt_fields)
+        df = self.split_datetime_field_in_year_month_and_day(df, dt_fields)
+
+        df = self.convert_to_category(df, [
+            'city',
+            'registered_via'
+        ])
+
+        df = self.convert_to_boolean(df, [
+            'is_ativo'
+        ])
+
+        df = self.convert_to_integer(df, [
+            'safra'
+        ])
+
+        df.rename({
+            'is_ativo': 'is_active'
+        }, inplace=True, axis=1)
+
+        df.drop('gender', axis=1, inplace=True)
+        df.drop('bd', axis=1, inplace=True)
+
+        return df
+    
+
+    def process_user_logs_df(self, df: pd.DataFrame) -> pd.DataFrame:
+        df = self.convert_to_integer(df, [
+            'num_25',
+            'num_50',
+            'num_75',
+            'num_985',
+            'num_100',
+            'num_unq',
+
+            # Transforming to int: this is a float number,
+            # but its decimal points are not useful
+            'total_secs'
+        ])
+
+        # Removing invalid total_secs
+        df = df[df['total_secs'] > 0]
+        df = df[df['total_secs'] < 2628000] # Less than one month
+
+        df['total_hours'] = df['total_secs'] / 3600
+
+        # Removing outliers
+        df = df[df['total_hours'] < 182]
+        df = df[df['num_25'] < 7458]
+        df = df[df['num_50'] < 395]
+        df = df[df['num_75'] < 215]
+        df = df[df['num_985'] < 2513]
+        df = df[df['num_100'] < 8414]
+        df = df[df['num_unq'] < 4362]
+
+        # user_logs_df.drop('total_secs', inplace=True, axis=1)
+
+        return df
