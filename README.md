@@ -67,7 +67,8 @@ Informações de usuários. Nem todos os usuários estão disponíveis no conjun
 
 
 ### TODO
-- Criar variáveis para custo de mês-1, mês-2
-    - Utilizar groupby com Shift
+- Trazer dados do DuckDB com Inner Joins
+- Criar variáveis para custo de mês-1, mês-2, mês+1
+    - Utilizar groupby com Shift (?)
     - Limpeza dos dados com essas colunas vazias
-- Criar método para buscar dados de transactions e de members
+- Pegar dados de 50.000 usuários de início
