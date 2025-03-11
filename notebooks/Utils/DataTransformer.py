@@ -56,14 +56,9 @@ class DataTransformer(object):
         return df
     
 
-    def create_cost_column(self, user_logs_df: pd.DataFrame) -> pd.DataFrame:
-        def calc_cost(row: pd.Series) -> float:
-            return 50 + \
-                  (0.0051 * row['num_unq']) + \
-                  (0.0001 * row['total_secs'])
-
-        user_logs_df['cost'] = user_logs_df.apply(calc_cost, axis=1)
-        return user_logs_df
+    def create_cost_column(self, num_unq_col, total_secs_col) -> pd.DataFrame:
+        result = 50 + (0.0051 * num_unq_col) + (0.0001 * total_secs_col)
+        return result
     
 
     def create_net_profit_column(self, user_logs_df: pd.DataFrame) -> pd.DataFrame:
