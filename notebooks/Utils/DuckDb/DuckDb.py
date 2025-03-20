@@ -39,3 +39,23 @@ class DuckDb(object):
         self.__conn.execute(
             f"TRUNCATE {table_name}"
         )
+
+
+    def load_table(self, table_name: str, limit: int = 9_999_999_999) -> pd.DataFrame:
+        query = f'''
+            SELECT *
+            FROM {table_name}
+            LIMIT {limit}
+        '''
+        df = self.__conn.execute(query).fetch_df()
+        return df
+    
+
+    def get_total_category_count(self, column: str, table: str) -> int:
+        query = f'''
+            SELECT
+                MAX(CAST({column} AS INTEGER))
+            FROM {table}
+        '''
+        result = self.__conn.execute(query).fetchone()
+        return int(result[0])
