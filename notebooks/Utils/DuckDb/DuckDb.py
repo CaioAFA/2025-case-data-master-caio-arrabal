@@ -55,6 +55,16 @@ class DuckDb(object):
         return df
     
 
+    def load_table_to_predict(self, table_name: str, start_from_safra: int) -> pd.DataFrame:
+        query = f'''
+            SELECT *
+            FROM {table_name}
+            WHERE safra >= {start_from_safra}
+        '''
+        df = self.__conn.execute(query).fetch_df()
+        return df
+    
+
     def get_total_category_count(self, column: str, table: str) -> int:
         query = f'''
             SELECT

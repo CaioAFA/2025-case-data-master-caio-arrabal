@@ -117,7 +117,7 @@ class PrepareDatasetProcessor(object):
                 user_row = self.__get_previous_months_cols_values(
                     user_df,
                     user_row,
-                    ['num_unq', 'total_secs', 'num_25', 'num_50', 'num_75', 'num_985', 'num_100']
+                    project_config.COLUMNS_TO_GET_HISTORICAL_DATA
                 )
 
                 rows.append(user_row)
@@ -209,10 +209,7 @@ class PrepareDatasetProcessor(object):
     def __get_previous_months_cols_values(self, user_df: pd.DataFrame, row: pd.Series, cols: List[str]) -> pd.DataFrame:
         current_safra = row['safra']
 
-        safras_to_consider = [
-            -2, # previous safras
-            -1,
-        ]
+        safras_to_consider = project_config.SAFRAS_TO_CONSIDER_ON_HISTORICAL_DATA
 
         if not self.__all_safras_exist(user_df, current_safra, safras_to_consider):
             # print(f'Linha sem safras {safras_to_consider}')

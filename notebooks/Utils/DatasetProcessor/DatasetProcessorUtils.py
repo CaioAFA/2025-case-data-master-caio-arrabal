@@ -2,6 +2,7 @@ import pandas as pd
 import project_config
 from Utils.DuckDb.DuckDb import DuckDb
 from typing import List
+from datetime import datetime
 
 
 class DatasetProcessorUtils(object):
@@ -148,3 +149,17 @@ class DatasetProcessorUtils(object):
 
         result = pd.concat(all_dfs)
         return result
+    
+
+    # TODO: add it on preprocessing step
+    def calc_remaining_days(self, df: pd.DataFrame) -> pd.DataFrame:
+        result = []
+        for _, row in df.iterrows():
+            transaction_date = datetime(row['transaction_date_year'], row['transaction_date_month'], row['transaction_date_day'])
+            member_expire_date = datetime(row['membership_expire_date_year'], row['membership_expire_date_month'], row['membership_expire_date_day'])
+
+            diff = (transaction_date - member_expire_date).total_seconds() / 24 / 60 / 60
+            result.append(abs(diff))
+
+        df['remaining_days'] = result
+        return df
