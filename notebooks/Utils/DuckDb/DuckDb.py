@@ -17,6 +17,10 @@ class DuckDb(object):
         return self.__conn
     
 
+    def commit(self):
+        self.__conn.execute('FORCE CHECKPOINT')
+    
+
     def create_database_table(self, df: pd.DataFrame, table_name: str):
         self.__conn.register('df_view', df)
         self.__conn.execute(

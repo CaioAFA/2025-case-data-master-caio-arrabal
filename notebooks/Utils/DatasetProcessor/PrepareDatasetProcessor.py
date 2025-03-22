@@ -22,6 +22,11 @@ class PrepareDatasetProcessor(object):
 
         self.__safra_utils = SafraUtils()
 
+        # Caching users information
+        # Key: user msno
+        # Value: row to copy if the current values are missing
+        self.__user_row_to_copy_member_info = {}
+
 
     def process_dataframe(
         self,
@@ -35,7 +40,7 @@ class PrepareDatasetProcessor(object):
         print(f'Tamanho do Dataframe completo: {len(full_dataframe)}')
 
         result = None
-        for i in range(0, total_iter):
+        for i in range(0, total_iter + 1):
             start = self.__process_users_batch_size * i
             end = self.__process_users_batch_size * (i + 1)
 
@@ -57,15 +62,16 @@ class PrepareDatasetProcessor(object):
             if len(treated_df) == 0:
                 continue
 
+            # Using any column that is coppied from another member register from the past / future
             print('Removendo linhas sem informações de membros suficientes')
-            treated_df = treated_df[~treated_df['members_msno'].isna()]
+            treated_df = treated_df[~treated_df['city'].isna()]
 
             # print('Removendo linhas sem informações suficientes para calcular o churn')
             # treated_df = treated_df[treated_df['no_churn_information'] == False]
 
             print(f'Tamanho da Dataframe pós filtros: {len(treated_df)}')
 
-            self.__duck_db.create_database_table(treated_df)
+            self.__duck_db.create_database_table(treated_df, self.__duck_db_table_name)
             if i == 0:
                 print('Truncando tabela')
                 self.__duck_db.truncate_table(self.__duck_db_table_name)
@@ -76,13 +82,13 @@ class PrepareDatasetProcessor(object):
 
             result = treated_df
 
+        self.__duck_db.get_connection().commit()
+
         # Return the last processed one for debug purposes
         return result
     
 
     def __treat_df(self, df: pd.DataFrame, users_msno: List[str]) -> pd.DataFrame:
-        global USER_ROW_TO_COPY_MEMBER_INFO
-
         df_by_users = {}
 
         print(f'Separando DataFrames por usuários')
@@ -92,9 +98,11 @@ class PrepareDatasetProcessor(object):
                 
             df_by_users[usr] = df[df['msno'] == usr]
 
+        print('Finalizado')
+
         rows = []
         users_qty = len(df_by_users.values())
-        count = 0
+        count = -1
         for msno, user_df in df_by_users.items():
             # print(f'Processando usuário {msno}')
 
@@ -104,7 +112,6 @@ class PrepareDatasetProcessor(object):
 
             for _, user_row in user_df.iterrows():
                 user_row = self.__fill_out_members_data_if_needed(user_df, user_row)
-                # user_row = self.__calc_row_churn(user_df, user_row)
                 user_row = self.__calc_row_churn_v2(user_df, user_row)
 
                 user_row = self.__get_previous_months_cols_values(
@@ -117,7 +124,7 @@ class PrepareDatasetProcessor(object):
                 # print(user_row)
 
             # Resetting this cache
-            USER_ROW_TO_COPY_MEMBER_INFO = {}
+            self.__user_row_to_copy_member_info = {}
 
         result = pd.DataFrame(rows)
         return result
@@ -132,16 +139,10 @@ class PrepareDatasetProcessor(object):
         is_churn = False
         no_churn_information = False
 
-        # print('#' * 100)
-        # print(f'User: {row["msno"]}')
-        # print(f'Current safra: {row["safra"]}')
-
         next_safra = self.__safra_utils.get_next_safras(row['safra'], months_to_consider_churn)
-        # print(f'Next safra: {next_safra}')
 
         # Can't obtain info from this safra so on
         if row["safra"] > self.__max_safra_to_consider:
-            # print('current safra > self.__max_safra_to_consider!')
             no_churn_information = True
 
         else:
@@ -149,12 +150,10 @@ class PrepareDatasetProcessor(object):
 
             # No more payment info, consider churn
             if len(next_safra_row) == 0:
-                # print(f'Safra {next_safra} não encontrada, pulando')
                 is_churn = True
 
             # Canceled, is churn
             elif next_safra_row['is_cancel'][0] == True:
-                # print(f'Safra {next_safra} encontrada com is_cancel, marcando como churn!')
                 is_churn = True
 
         row['is_churn'] = is_churn
@@ -169,16 +168,16 @@ class PrepareDatasetProcessor(object):
         members_msno_col = 'members_msno'
 
         # Already filled out
-        if not row[members_msno_col] == None:
+        if not pd.isna(row[members_msno_col]):
             row['_filled_out_members_info'] = 'Infos já existentes'
             return row
 
         # No user info available in any safras
-        safras_df = user_df[~user_df[members_msno_col].isna()]
+        safras_df = user_df[~user_df[members_msno_col].isna()]    
         if len(safras_df) == 0:
             row['_filled_out_members_info'] = 'Sem infos'
             return row
-
+        
         members_cols_to_consider = [
             'city', 'registered_via', 'is_active', 'registration_init_time_year',
             'registration_init_time_month', 'registration_init_time_day',
@@ -186,7 +185,7 @@ class PrepareDatasetProcessor(object):
             'members_msno'
         ]
 
-        if row['msno'] not in USER_ROW_TO_COPY_MEMBER_INFO:
+        if row['msno'] not in self.__user_row_to_copy_member_info:
             current_safra = row['safra']
 
             min_safra = safras_df['safra'].min()
@@ -196,9 +195,9 @@ class PrepareDatasetProcessor(object):
 
             row_to_copy = safras_df[safras_df['safra'] == safra_to_consider]
             row_to_copy = row_to_copy.reset_index()
-            USER_ROW_TO_COPY_MEMBER_INFO[row['msno']] = row_to_copy
+            self.__user_row_to_copy_member_info[row['msno']] = row_to_copy
         else:
-            row_to_copy = USER_ROW_TO_COPY_MEMBER_INFO[row['msno']]
+            row_to_copy = self.__user_row_to_copy_member_info[row['msno']]
 
         row['_filled_out_members_info'] = 'Copiadas'
         for col in members_cols_to_consider:
