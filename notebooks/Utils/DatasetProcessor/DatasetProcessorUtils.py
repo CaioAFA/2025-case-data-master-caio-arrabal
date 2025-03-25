@@ -3,11 +3,13 @@ import project_config
 from Utils.DuckDb.DuckDb import DuckDb
 from typing import List
 from datetime import datetime
+from Utils.DataTransformer import DataTransformer
 
 
 class DatasetProcessorUtils(object):
     def __init__(self):
         self.__duckdb = DuckDb()
+        self.__data_transformer = DataTransformer()
 
 
     def load_table(self, table_name: str, limit: int = 9_999_999_999) -> pd.DataFrame:
@@ -162,4 +164,47 @@ class DatasetProcessorUtils(object):
             result.append(abs(diff))
 
         df['remaining_days'] = result
+        return df
+    
+
+    def process_categories(self, df: pd.DataFrame) -> pd.DataFrame:
+        # Turning columns into categories
+        cat_columns = {
+            'payment_method_id': self.get_total_payment_method_id_count() + 1,
+            'city': self.get_total_city_count() + 1,
+            'registered_via': self.get_total_registered_via_count() + 1
+        }
+
+        df = self.__data_transformer.convert_to_category(
+            df,
+            list(cat_columns.keys())
+        )
+
+        df = pd.get_dummies(df, columns=list(cat_columns.keys()))
+
+        # Filling out the missing categories
+        for cat, total_count in cat_columns.items():
+            for i in range(total_count):
+                cat_key = f'{cat}_{int(i)}'
+
+                # Fixing wrong values, like "city_1.0" -> "city_1"
+
+                wrong_cat_key = f'{cat_key}.0'
+                if wrong_cat_key in list(df.columns):
+                    print(f'Ajustando categoria de nome "{wrong_cat_key}" para "{cat_key}"')
+                    df = df.rename(columns={wrong_cat_key: cat_key})
+
+                # print(f'Procurando {cat_key}...')
+
+                if cat_key not in list(df.columns):
+                    print(f'Adicionando coluna {cat_key}')
+                    df[cat_key] = False
+
+        return df
+    
+
+    def split_safras(self, df: pd.DataFrame) -> pd.DataFrame:
+        df['safra_year'] = df['safra'].astype(str).str[:4].astype(float)
+        df['safra_month'] = df['safra'].astype(str).str[-2:].astype(float)
+        df = df.drop('safra', axis=1)
         return df
