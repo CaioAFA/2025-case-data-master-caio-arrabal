@@ -7,8 +7,8 @@ from Utils.DataTransformer import DataTransformer
 
 
 class DatasetProcessorUtils(object):
-    def __init__(self):
-        self.__duckdb = DuckDb()
+    def __init__(self, duck_db: DuckDb):
+        self.__duckdb = duck_db
         self.__data_transformer = DataTransformer()
 
 
