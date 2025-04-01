@@ -65,6 +65,9 @@ Informações de usuários. Nem todos os usuários estão disponíveis no conjun
 | total_secs             | Total de segundos tocados                                           |
 
 
+### Unsupervised Learning
+Utilizando algoritmo de Machine Learning pois...
+
 
 ### TODO
 - Trazer dados do DuckDB com Inner Joins
@@ -72,3 +75,4 @@ Informações de usuários. Nem todos os usuários estão disponíveis no conjun
     - Utilizar groupby com Shift (?)
     - Limpeza dos dados com essas colunas vazias
 - Pegar dados de 50.000 usuários de início
+- Utilizar o KMeans para preprocessar grupos de usuários antes de executar o algoritmo de Machine Learning

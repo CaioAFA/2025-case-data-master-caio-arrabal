@@ -7,6 +7,12 @@ DUCKDB_TRANSACTIONS_DATABASE = 'transactions'
 DUCKDB_MEMBERS_DATABASE = 'members'
 DUCKDB_USER_LOGS_DATABASE = 'user_logs'
 
+# Last processed dataset to test after fixing churn logic (22/03/2025)
+PRE_PREPARED_DATA_TABLE = 'treated_churn_dataset_2025_03_21_19h36m'
+
+# Table with prediction data
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_03_26_20h52m'
+
 # Max safra = 201702, so we need to consider three months before
 MAX_SAFRA_TO_CONSIDER_ON_DATA_PREPARE = 201611
 
@@ -15,13 +21,6 @@ SAFRAS_TO_CONSIDER_ON_HISTORICAL_DATA = [
     -2, # previous safras
     -1,
 ]
-
-# Last processed dataset to test after fixing churn logic (22/03/2025)
-PRE_PREPARED_DATA_TABLE = 'treated_churn_dataset_2025_03_21_19h36m'
-
-# PRE_PREPARED_TABLE_DATA = 'treated_churn_dataset_2025_03_13_15h03m' # Best Dataset - 14/03/2025
-# PRE_PREPARED_TABLE_DATA = 'tzreated_churn_dataset_2025_03_15_08h55m' # Last processed dataset after changes on 14/03/2025
-# PRE_PREPARED_TABLE_DATA = 'treated_churn_dataset_2025_03_16_12h04m' # Last processed dataset to test after churn logic change (16/03/2025)
 
 COLUMNS_USED_ON_TRAIN_AND_PREDICTION = [
     'registration_init_time_day', 'registration_init_time_day_of_year', 'registration_init_time_year',
