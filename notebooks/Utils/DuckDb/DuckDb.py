@@ -55,10 +55,11 @@ class DuckDb(object):
         )
 
 
-    def load_table(self, table_name: str, limit: int = 9_999_999_999) -> pd.DataFrame:
+    def load_table(self, table_name: str, limit: int = 9_999_999_999, where_condition: str = '') -> pd.DataFrame:
         query = f'''
             SELECT *
             FROM {table_name}
+            {where_condition}
             LIMIT {limit}
         '''
         df = self.__conn.execute(query).fetch_df()

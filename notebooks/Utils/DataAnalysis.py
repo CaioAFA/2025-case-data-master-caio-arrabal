@@ -27,3 +27,30 @@ class DataAnalysis(object):
     def check_if_float_field_is_integer(self, df: pd.DataFrame, field: str) -> bool:
         calc = (df[field].astype(int) == df[field]).value_counts()
         return False not in calc.keys()
+    
+
+    def plot_pizza(
+        self, value_counts: pd.DataFrame, labels: List[str], title: str,
+        legend: str = '', ax: plt = None, colors: List[str] = None
+    ):
+        if ax is None:
+            fig, ax = plt.subplots()
+
+        ax.pie(
+            value_counts,
+            autopct='%1.1f%%',
+            startangle=90,
+            wedgeprops={'edgecolor': 'black'},
+            colors=colors,
+            # frame=ax,
+            # textprops={'color': 'white'}
+        )
+
+        ax.set_title(title)
+
+        if legend:
+            ax.legend(
+                labels,
+                title=legend,
+                bbox_to_anchor=(1.0, 1),
+            )

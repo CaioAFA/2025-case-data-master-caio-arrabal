@@ -203,8 +203,11 @@ class DatasetProcessorUtils(object):
         return df
     
 
-    def split_safras(self, df: pd.DataFrame) -> pd.DataFrame:
+    def split_safras(self, df: pd.DataFrame, drop_safra: bool = False) -> pd.DataFrame:
         df['safra_year'] = df['safra'].astype(str).str[:4].astype(float)
         df['safra_month'] = df['safra'].astype(str).str[-2:].astype(float)
-        df = df.drop('safra', axis=1)
+
+        if drop_safra:
+            df = df.drop('safra', axis=1)
+
         return df

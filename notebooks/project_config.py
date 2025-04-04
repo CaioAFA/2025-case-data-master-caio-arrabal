@@ -11,7 +11,7 @@ DUCKDB_USER_LOGS_DATABASE = 'user_logs'
 PRE_PREPARED_DATA_TABLE = 'treated_churn_dataset_2025_03_21_19h36m'
 
 # Table with prediction data
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_03_26_20h52m'
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_03_20h18m'
 
 # Max safra = 201702, so we need to consider three months before
 MAX_SAFRA_TO_CONSIDER_ON_DATA_PREPARE = 201611
@@ -50,4 +50,9 @@ COLUMNS_USED_ON_TRAIN_AND_PREDICTION = [
 
 TARGET_COLUMN = 'is_churn'
 
-SELECTED_MODEL = './models/random_forest_model_2025-03-24-21h-56m.joblib'
+# Model after splitting data into train / validation by safra datetime, not with
+# train_test_split randomly
+SELECTED_MODEL = './models/random_forest_model_2025-04-02-08h-56m.joblib'
+
+TRAIN_DATA_UNTIL_SAFRA = 201608
+TEST_DATA_UNTIL_SAFRA = 201611
