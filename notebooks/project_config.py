@@ -56,3 +56,17 @@ SELECTED_MODEL = './models/random_forest_model_2025-04-02-08h-56m.joblib'
 
 TRAIN_DATA_UNTIL_SAFRA = 201608
 TEST_DATA_UNTIL_SAFRA = 201611
+
+# TESTING
+SELECTED_MODEL = './models/random_forest_model_2025-04-04-21h-36m.joblib' # Testing new model
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_21h40m' # Testing
+
+SELECTED_MODEL = './models/random_forest_model_2025-04-04-22h-04m.joblib' # Testing new model
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_22h05m' # Testing
+
+SELECTED_MODEL = './models/random_forest_model_2025-04-04-22h-45m.joblib' # Testing new model
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_22h46m' # Testing
+
+SELECTED_MODEL = './models/random_forest_model_2025-04-04-23h-08m.joblib' # Testing: without balancing true / false dfs
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_23h09m' # Testing
+

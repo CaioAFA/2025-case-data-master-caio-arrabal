@@ -31,19 +31,20 @@ class DataAnalysis(object):
 
     def plot_pizza(
         self, value_counts: pd.DataFrame, labels: List[str], title: str,
-        legend: str = '', ax: plt = None, colors: List[str] = None
+        legend: str = '', ax: plt = None, colors: List[str] = None,
+        text_color: str = None
     ):
         if ax is None:
             fig, ax = plt.subplots()
 
+        text_props = {'color': text_color} if text_color else None
         ax.pie(
             value_counts,
             autopct='%1.1f%%',
             startangle=90,
             wedgeprops={'edgecolor': 'black'},
             colors=colors,
-            # frame=ax,
-            # textprops={'color': 'white'}
+            textprops=text_props
         )
 
         ax.set_title(title)
