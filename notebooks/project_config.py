@@ -70,3 +70,6 @@ PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_22h46m' # Testing
 SELECTED_MODEL = './models/random_forest_model_2025-04-04-23h-08m.joblib' # Testing: without balancing true / false dfs
 PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_23h09m' # Testing
 
+SELECTED_MODEL = './models/random_forest_model_2025-04-05-08h-05m.joblib' # Testing: more false than true
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_05_08h07m' # Testing
+
