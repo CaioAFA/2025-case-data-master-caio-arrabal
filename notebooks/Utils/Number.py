@@ -20,3 +20,8 @@ class NumberUtils(object):
         result = ''.join(formatted_number)
         result = result.replace('-.', '-') # Fix negative values problem
         return result
+    
+
+    def format_float_number(self, number: float) -> float:
+        splitted_num
+        pass

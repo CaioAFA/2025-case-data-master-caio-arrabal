@@ -70,9 +70,14 @@ Utilizando algoritmo de Machine Learning pois...
 
 
 ### TODO
-- Trazer dados do DuckDB com Inner Joins
-- Criar variáveis para custo de mês-1, mês-2, mês+1
-    - Utilizar groupby com Shift (?)
-    - Limpeza dos dados com essas colunas vazias
-- Pegar dados de 50.000 usuários de início
+- Remover coluna de custo
+- Definir modelo + tuning posterior
+- Análise de clusters
+- Criar modo de seleção automática de modelo + tabela de banco de dados
+- Refatorar códigos
+- Documentar tabelas geradas no README.md
+
+
+### DONE
 - Utilizar o KMeans para preprocessar grupos de usuários antes de executar o algoritmo de Machine Learning
+    - Não funcionou muito...

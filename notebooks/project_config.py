@@ -70,6 +70,19 @@ PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_22h46m' # Testing
 SELECTED_MODEL = './models/random_forest_model_2025-04-04-23h-08m.joblib' # Testing: without balancing true / false dfs
 PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_23h09m' # Testing
 
-SELECTED_MODEL = './models/random_forest_model_2025-04-05-08h-05m.joblib' # Testing: more false than true
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_05_08h07m' # Testing
+SELECTED_MODEL = './models/random_forest_model_2025-04-06-09h-59m.joblib' # Testing: more false than true (// 0.6)
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_10h00m' # Testing
+
+# BEST MODEL!
+SELECTED_MODEL = './models/random_forest_model_2025-04-05-08h-05m.joblib' # Testing: more false than true (// 0.7)
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_09h36m' # Testing
+
+# SELECTED_MODEL = './models/random_forest_model_2025-04-06-10h-29m.joblib' # Testing: more false than true (// 0.78)
+# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_10h29m' # Testing
+
+# SELECTED_MODEL = './models/random_forest_model_2025-04-06-10h-10m.joblib' # Testing: more false than true (// 0.83)
+# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_10h11m' # Testing
+
+# SELECTED_MODEL = './models/random_forest_model_2025-04-05-08h-37m.joblib' # Testing: more false than true (// 0.5)
+# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_05_08h37m' # Testing
 
