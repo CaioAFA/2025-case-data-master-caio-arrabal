@@ -1,5 +1,5 @@
 class NumberUtils(object):
-    def format_integer_number(self, number: int) -> int:
+    def format_integer_number(self, number: int) -> str:
         '''
         Transform "100000" into "100.000"
         '''
@@ -22,6 +22,19 @@ class NumberUtils(object):
         return result
     
 
-    def format_float_number(self, number: float) -> float:
-        splitted_num
-        pass
+    def format_float_number(self, number: float, decimal_houses: int = None) -> str:
+        splitted_num = str(number).split('.')
+
+        int_number = splitted_num[0]
+        decimal_digits = splitted_num[1] if len(splitted_num) > 1 else None
+
+        formatted_int_number = self.format_integer_number(int_number)
+
+        result = formatted_int_number
+        if decimal_digits:
+            if decimal_houses:
+                decimal_digits = decimal_digits[:decimal_houses]
+
+            result += ',' + decimal_digits
+
+        return result

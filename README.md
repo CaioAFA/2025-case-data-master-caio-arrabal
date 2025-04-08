@@ -70,14 +70,18 @@ Utilizando algoritmo de Machine Learning pois...
 
 
 ### TODO
-- Remover coluna de custo
-- Definir modelo + tuning posterior
-- Análise de clusters
 - Criar modo de seleção automática de modelo + tabela de banco de dados
 - Refatorar códigos
 - Documentar tabelas geradas no README.md
+- Análise da ação proativa
+- Revisar documentaçao (critérios de avaliação)
 
 
 ### DONE
+- Definir modelo + tuning posterior
+
+- Análise de clusters
+    - Dois clusters: heavy users e light users
+
 - Utilizar o KMeans para preprocessar grupos de usuários antes de executar o algoritmo de Machine Learning
     - Não funcionou muito...
