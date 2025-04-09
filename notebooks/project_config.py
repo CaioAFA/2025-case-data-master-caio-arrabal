@@ -1,3 +1,16 @@
+######################## Replace these variables after execute the notebooks! ########################
+
+# Last processed dataset to test after fixing churn logic (22/03/2025)
+PRE_PREPARED_DATA_TABLE = 'treated_churn_dataset_2025_03_21_19h36m'
+
+# Machine Learning model path
+SELECTED_MODEL = './models/random_forest_model_2025-04-08-18h-37m.joblib' # Testing: more false than true (// 0.6)
+
+# Table with prediction data
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_08_18h36m' # Testing
+
+######################################################################################################
+
 PARQUET_TRANSACTIONS_FILE_NAME = '../data/transactions.parquet'
 PARQUET_MEMBERS_FILE_NAME = '../data/members.parquet'
 PARQUET_USER_LOGS_FILE_NAME = '../data/user_logs.parquet'
@@ -7,14 +20,11 @@ DUCKDB_TRANSACTIONS_DATABASE = 'transactions'
 DUCKDB_MEMBERS_DATABASE = 'members'
 DUCKDB_USER_LOGS_DATABASE = 'user_logs'
 
-# Last processed dataset to test after fixing churn logic (22/03/2025)
-PRE_PREPARED_DATA_TABLE = 'treated_churn_dataset_2025_03_21_19h36m'
-
-# Table with prediction data
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_03_20h18m'
-
 # Max safra = 201702, so we need to consider three months before
 MAX_SAFRA_TO_CONSIDER_ON_DATA_PREPARE = 201611
+
+TRAIN_DATA_UNTIL_SAFRA = 201608
+TEST_DATA_UNTIL_SAFRA = 201611
 
 COLUMNS_TO_GET_HISTORICAL_DATA = ['num_unq', 'total_secs', 'num_25', 'num_50', 'num_75', 'num_985', 'num_100']
 SAFRAS_TO_CONSIDER_ON_HISTORICAL_DATA = [
@@ -22,27 +32,10 @@ SAFRAS_TO_CONSIDER_ON_HISTORICAL_DATA = [
     -1,
 ]
 
-
-"avg(transaction_date_month)"	"avg(safra_month)"	"avg(membership_expire_date_month)"
-
 COLUMNS_USED_ON_TRAIN_AND_PREDICTION = [
     'registration_init_time_day', 'registration_init_time_year',
 
-    # Removed to solve churn errors
-    #'transaction_date_day_of_year',
-    #'transaction_date_month',
-    # 'membership_expire_date_day_of_year',
-    # 'membership_expire_date_month',
-    # 'safra_month',
-    # 'transaction_date_day',
-    # 'transaction_date_day_of_week',
-    # 'registration_init_time_day_of_year'
-    # 'membership_expire_date_day',
-    # 'membership_expire_date_year',
-
-
     'is_auto_renew', 'is_cancel', 'remaining_days',
-    
 
     # Historical Data
     'num_100', 'num_100-1M', 'num_100-2M',
@@ -62,66 +55,3 @@ COLUMNS_USED_ON_TRAIN_AND_PREDICTION = [
 ]
 
 TARGET_COLUMN = 'is_churn'
-
-# Model after splitting data into train / validation by safra datetime, not with
-# train_test_split randomly
-SELECTED_MODEL = './models/random_forest_model_2025-04-02-08h-56m.joblib'
-
-TRAIN_DATA_UNTIL_SAFRA = 201608
-TEST_DATA_UNTIL_SAFRA = 201611
-
-# TESTING
-SELECTED_MODEL = './models/random_forest_model_2025-04-04-21h-36m.joblib' # Testing new model
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_21h40m' # Testing
-
-SELECTED_MODEL = './models/random_forest_model_2025-04-04-22h-04m.joblib' # Testing new model
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_22h05m' # Testing
-
-SELECTED_MODEL = './models/random_forest_model_2025-04-04-22h-45m.joblib' # Testing new model
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_22h46m' # Testing
-
-SELECTED_MODEL = './models/random_forest_model_2025-04-04-23h-08m.joblib' # Testing: without balancing true / false dfs
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_23h09m' # Testing
-
-# SELECTED_MODEL = './models/random_forest_model_2025-04-06-09h-59m.joblib' # Testing: more false than true (// 0.6)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_10h00m' # Testing
-
-# SELECTED_MODEL = './models/random_forest_model_2025-04-07-20h-46m.joblib' # Testing: more false than true (// 0.83)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_20h47m' # Testing
-
-SELECTED_MODEL = './models/random_forest_model_2025-04-05-08h-05m.joblib' # Testing: more false than true (// 0.7)
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_09h36m' # Testing
-
-# # Testing
-# SELECTED_MODEL = './models/random_forest_model_2025-04-07-19h-25m.joblib'
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_19h28m' # Testing
-
-
-# SELECTED_MODEL = './models/random_forest_model_2025-04-06-10h-29m.joblib' # Testing: more false than true (// 0.78)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_10h29m' # Testing
-
-# SELECTED_MODEL = './models/random_forest_model_2025-04-06-10h-10m.joblib' # Testing: more false than true (// 0.83)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_10h11m' # Testing
-
-# SELECTED_MODEL = './models/random_forest_model_2025-04-05-08h-37m.joblib' # Testing: more false than true (// 0.5)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_05_08h37m' # Testing
-
-########### TRAINING AFTER REMOVING SOME FIELDS FROM PROJECT
-# SELECTED_MODEL = './models/random_forest_model_2025-04-07-21h-31m.joblib' # Testing: more false than true (// 0.9)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_21h31m' # Testing
-
-# SELECTED_MODEL = './models/random_forest_model_2025-04-07-21h-40m.joblib' # Testing: more false than true (// 0.7)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_21h41m' # Testing
-
-# SELECTED_MODEL = './models/random_forest_model_2025-04-07-21h-51m.joblib' # Testing: more false than true (// 0.6)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_21h52m' # Testing
-
-
-# ########### TRAINING AFTER REMOVING MORE FIELDS FROM PROJECT
-# SELECTED_MODEL = './models/random_forest_model_2025-04-07-22h-16m.joblib' # Testing: more false than true (// 0.7)
-# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_22h16m' # Testing
-
-# BEST MODEL!
-# Test with this parameters
-SELECTED_MODEL = './models/random_forest_model_2025-04-08-18h-37m.joblib' # Testing: more false than true (// 0.6)
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_08_18h36m' # Testing
