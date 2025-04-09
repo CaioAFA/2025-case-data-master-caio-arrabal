@@ -28,7 +28,7 @@ SAFRAS_TO_CONSIDER_ON_HISTORICAL_DATA = [
 COLUMNS_USED_ON_TRAIN_AND_PREDICTION = [
     'registration_init_time_day', 'registration_init_time_year',
 
-    # Removed to solve churn errors?
+    # Removed to solve churn errors
     #'transaction_date_day_of_year',
     #'transaction_date_month',
     # 'membership_expire_date_day_of_year',
@@ -89,7 +89,6 @@ PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_04_23h09m' # Testing
 # SELECTED_MODEL = './models/random_forest_model_2025-04-07-20h-46m.joblib' # Testing: more false than true (// 0.83)
 # PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_20h47m' # Testing
 
-# BEST MODEL!
 SELECTED_MODEL = './models/random_forest_model_2025-04-05-08h-05m.joblib' # Testing: more false than true (// 0.7)
 PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_09h36m' # Testing
 
@@ -118,6 +117,11 @@ PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_06_09h36m' # Testing
 # PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_21h52m' # Testing
 
 
-########### TRAINING AFTER REMOVING MORE FIELDS FROM PROJECT
-SELECTED_MODEL = './models/random_forest_model_2025-04-07-22h-16m.joblib' # Testing: more false than true (// 0.7)
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_22h16m' # Testing
+# ########### TRAINING AFTER REMOVING MORE FIELDS FROM PROJECT
+# SELECTED_MODEL = './models/random_forest_model_2025-04-07-22h-16m.joblib' # Testing: more false than true (// 0.7)
+# PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_07_22h16m' # Testing
+
+# BEST MODEL!
+# Test with this parameters
+SELECTED_MODEL = './models/random_forest_model_2025-04-08-18h-37m.joblib' # Testing: more false than true (// 0.6)
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_08_18h36m' # Testing
