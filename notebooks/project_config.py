@@ -4,10 +4,10 @@
 PRE_PREPARED_DATA_TABLE = 'treated_churn_dataset_2025_03_21_19h36m'
 
 # Machine Learning model path
-SELECTED_MODEL = './models/random_forest_model_2025-04-08-18h-37m.joblib' # Testing: more false than true (// 0.6)
+SELECTED_MODEL = './models/random_forest_model_2025-04-08-18h-37m.joblib'
 
 # Table with prediction data
-PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_08_18h36m' # Testing
+PREDICTED_DATA_TABLE = 'predicted_dataset_2025_04_08_18h36m'
 
 ######################################################################################################
 
