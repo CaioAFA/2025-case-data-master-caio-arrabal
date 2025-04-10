@@ -7,15 +7,45 @@ Link do Kaggle: https://www.kaggle.com/datasets/gcenachi/case-data-master-2024
 ## Tecnologias utilizadas
 
 Desafio com solução de Aprendizado Supervisionado:
-Python3
-- Pandas: utilizado para:
+
+**Python3**
+- Pandas:
     - Leitura / escrita de bases de dados
-    - Data preparation
+    - Data prepare
+
 - Scikit-Learn: fácil prototipagem, bom para testar hipóteses e diferentes algoritmos para solução do problema
+
 - Conda: gerenciamento de pacotes
 
-Considerações:
-- Utilizar uma implementação que possa ser utilizada em hardwares com menos memória
+- Matplotlib + Seaborn: gráficos para análise de dados
+
+- Joblib: salvar / ler modelo treinado
+
+- Pyarrow: leitura de arquivos Parquet
+
+<br>
+
+**DuckDB**
+- Consultas dos dados em formato SQL
+
+- Possibilidade de trabalhar com uma grande quantidade de dados com maior eficiência de memória
+
+- Data prepare
+
+<br>
+
+## Instalação do projeto
+Instalando as dependências necessárias:
+```bash
+conda env create -p ./env -f ./environment.yml
+```
+
+<br>
+
+Exportando os requirements.txt:
+```bash
+conda env export > ./environment.yml
+```
 
 <br>
 
@@ -147,37 +177,3 @@ OBS: Nem todos os dados serão usados no treinamento do modelo!
 | predicted_is_churn_proba_false | Probabilidade da previsão ser False |
 | predicted_is_churn_proba_true | Probabilidade da previsão ser True |
 | predict_certain | Certeza a respeito da previsão |
-
-
-
-
-### TODO
-- Como instalar o projeto?
-    - Conda
-    - requirements.txt
-- Revisar documentaçao (critérios de avaliação)
-
-
-### DONE
-- Documentar como executar o código
-
-- Análise da ação proativa
-
-- Documentar tabelas geradas no README.md
-
-- Criar modo de seleção automática de modelo + tabela de banco de dados
-    - Não será feito (sem tempo hábil)
-
-- Refatorar códigos
-    - ✅ Tudo em português
-    - ✅ Remover imports desnecessários
-    - ✅ Remover métodos descenessários
-    - ✅ Cabeçalho explicando o que o Notebook faz
-
-- Definir modelo + tuning posterior
-
-- Análise de clusters
-    - Dois clusters: heavy users e light users
-
-- Utilizar o KMeans para preprocessar grupos de usuários antes de executar o algoritmo de Machine Learning
-    - Não funcionou muito...

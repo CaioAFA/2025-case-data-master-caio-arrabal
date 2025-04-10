@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import List, Union, Iterator, Callable
+from typing import Iterator, Callable
 from Utils.DataTransformer import DataTransformer
 import pyarrow.parquet as pq
 import project_config
